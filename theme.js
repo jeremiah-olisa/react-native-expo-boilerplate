@@ -59,7 +59,7 @@ const themedObject = (color) => ({
   foreground: THEME.light[`${color}Foreground`]
     ? `hsl(${THEME.light[`${color}Foreground`]})`
     : undefined,
-  darkForeground: THEME.dark[`${color}Foreground`]
+  "dark-foreground": THEME.dark[`${color}Foreground`]
     ? `hsl(${THEME.dark[`${color}Foreground`]})`
     : undefined,
 });

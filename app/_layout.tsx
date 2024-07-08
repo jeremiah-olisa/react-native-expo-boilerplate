@@ -5,11 +5,12 @@ import { Theme, ThemeProvider } from "@react-navigation/native";
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
-import { Platform } from "react-native";
-import { NAV_THEME } from "~/lib/constants";
+import { Platform, View } from "react-native";
+import { NAV_THEME } from "@/lib/constants";
 import { useColorScheme } from "~/lib/useColorScheme";
 
-import { NativeWindStyleSheet } from "nativewind";
+import { NativeWindStyleSheet, withExpoSnack } from "nativewind";
+import { colorThemes } from "@/lib/constants/color-theme";
 
 NativeWindStyleSheet.setOutput({
   default: "native",
@@ -34,7 +35,7 @@ export {
 // Prevent the splash screen from auto-hiding before getting the color scheme.
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+function RootLayout() {
   const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
 
@@ -70,8 +71,12 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+      {/* <View style={colorThemes[colorScheme]} className="flex-1 dark:bg-slate-900"> */}
       <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
       <Stack />
+      {/* </View> */}
     </ThemeProvider>
   );
 }
+
+export default withExpoSnack(RootLayout);
