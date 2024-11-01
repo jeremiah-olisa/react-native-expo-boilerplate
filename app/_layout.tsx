@@ -8,9 +8,9 @@ import * as React from "react";
 import { Platform, View } from "react-native";
 import { NAV_THEME } from "@/lib/constants";
 import { useColorScheme } from "~/lib/useColorScheme";
-
 import { NativeWindStyleSheet, withExpoSnack } from "nativewind";
-import { colorThemes } from "@/lib/constants/color-theme";
+import { GluestackUIProvider, Text, Box } from "@gluestack-ui/themed";
+import { config } from "@gluestack-ui/config";
 
 NativeWindStyleSheet.setOutput({
   default: "native",
@@ -18,19 +18,16 @@ NativeWindStyleSheet.setOutput({
   ios: "native",
 });
 
-const LIGHT_THEME: Theme = {
-  dark: false,
-  colors: NAV_THEME.light,
-};
-const DARK_THEME: Theme = {
-  dark: true,
-  colors: NAV_THEME.dark,
-};
+// const LIGHT_THEME: Theme = {
+//   dark: false,
+//   colors: NAV_THEME.light,
+// };
+// const DARK_THEME: Theme = {
+//   dark: true,
+//   colors: NAV_THEME.dark,
+// };
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from "expo-router";
+export { ErrorBoundary } from "expo-router";
 
 // Prevent the splash screen from auto-hiding before getting the color scheme.
 SplashScreen.preventAutoHideAsync();
@@ -70,13 +67,13 @@ function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+    <GluestackUIProvider config={config}>
       {/* <View style={colorThemes[colorScheme]} className="flex-1 dark:bg-slate-900"> */}
-      <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+      <StatusBar style={"auto"} />
       <Stack />
       {/* </View> */}
-    </ThemeProvider>
+    </GluestackUIProvider>
   );
 }
 
-export default withExpoSnack(RootLayout);
+export default RootLayout;
