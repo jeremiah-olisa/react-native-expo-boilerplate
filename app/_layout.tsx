@@ -1,8 +1,15 @@
 import { Stack } from "expo-router";
 
+import { ThemedGluestackUIProvider } from "@/components/ui/gluestack-ui-provider/themed-gluestack";
+import { ThemeProvider } from "@/components/ui/ThemeProvider/ThemeProvider";
 import "@/global.css";
-import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 
 export default function RootLayout() {
-  return <GluestackUIProvider mode="light"><Stack /></GluestackUIProvider>;
+  return (
+    <ThemeProvider>
+      <ThemedGluestackUIProvider>
+        <Stack />
+      </ThemedGluestackUIProvider>
+    </ThemeProvider>
+  );
 }
