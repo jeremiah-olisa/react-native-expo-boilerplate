@@ -22,15 +22,19 @@ interface ThemeContextType {
   setTheme: (theme: AppTheme) => void;
 }
 
-export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+export const ThemeContext = createContext<ThemeContextType | undefined>(
+  undefined
+);
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const systemColorScheme = useRNColorScheme();
   const [theme, setCurrentTheme] = useState<AppTheme>("system");
-  
+
   // Calculate isDarkMode without triggering extra renders
   const isDarkMode = useMemo(() => {
-    return theme === "dark" || (theme === "system" && systemColorScheme === "dark");
+    return (
+      theme === "dark" || (theme === "system" && systemColorScheme === "dark")
+    );
   }, [theme, systemColorScheme]);
 
   // Memoize navigation theme to prevent unnecessary recalculations
@@ -42,7 +46,9 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const loadTheme = async () => {
       try {
-        const savedTheme = await SecureStore.getItemAsync("theme") as AppTheme | null;
+        const savedTheme = (await SecureStore.getItemAsync(
+          "theme"
+        )) as AppTheme | null;
         if (savedTheme) {
           setCurrentTheme(savedTheme);
         }
@@ -56,7 +62,8 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   // Set the theme in nativewind (only when it changes)
   const { setColorScheme } = useNativeWindColorScheme();
   useEffect(() => {
-    const effectiveTheme = theme === "system" ? systemColorScheme || "light" : theme;
+    const effectiveTheme =
+      theme === "system" ? systemColorScheme || "light" : theme;
     setColorScheme(effectiveTheme);
   }, [theme, systemColorScheme, setColorScheme]);
 
@@ -70,8 +77,8 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : 
-                    theme === "dark" ? "system" : "light";
+    const newTheme =
+      theme === "light" ? "dark" : theme === "dark" ? "system" : "light";
     setTheme(newTheme);
   };
 
