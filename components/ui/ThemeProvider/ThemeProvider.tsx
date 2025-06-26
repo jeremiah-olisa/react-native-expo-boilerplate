@@ -10,9 +10,9 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { useColorScheme as useRNColorScheme } from "react-native";
+import { Appearance, useColorScheme as useRNColorScheme } from "react-native";
 
-type AppTheme = "light" | "dark" | "system";
+export type AppTheme = "light" | "dark" | "system";
 
 interface ThemeContextType {
   theme: AppTheme;
@@ -29,20 +29,22 @@ export const ThemeContext = createContext<ThemeContextType | undefined>(
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const systemColorScheme = useRNColorScheme();
   const [theme, setCurrentTheme] = useState<AppTheme>("system");
+  const { setColorScheme } = useNativeWindColorScheme();
 
-  // Calculate isDarkMode without triggering extra renders
-  const isDarkMode = useMemo(() => {
-    return (
-      theme === "dark" || (theme === "system" && systemColorScheme === "dark")
-    );
+  // Calculate the effective theme (resolves "system" to actual scheme)
+  const effectiveTheme = useMemo(() => {
+    return theme === "system" ? systemColorScheme || "light" : theme;
   }, [theme, systemColorScheme]);
 
-  // Memoize navigation theme to prevent unnecessary recalculations
+  // Calculate isDarkMode based on effective theme
+  const isDarkMode = effectiveTheme === "dark";
+
+  // Memoize navigation theme
   const navigationTheme = useMemo(() => {
     return isDarkMode ? DarkTheme : DefaultTheme;
   }, [isDarkMode]);
 
-  // Load saved theme from storage (runs only once)
+  // Load saved theme from storage
   useEffect(() => {
     const loadTheme = async () => {
       try {
@@ -59,13 +61,21 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     loadTheme();
   }, []);
 
-  // Set the theme in nativewind (only when it changes)
-  const { setColorScheme } = useNativeWindColorScheme();
+  // Listen for device theme changes
   useEffect(() => {
-    const effectiveTheme =
-      theme === "system" ? systemColorScheme || "light" : theme;
+    const subscription = Appearance.addChangeListener(({ colorScheme }) => {
+      if (theme === "system") {
+        setColorScheme(colorScheme || "light");
+      }
+    });
+
+    return () => subscription.remove();
+  }, [theme, setColorScheme]);
+
+  // Update nativewind color scheme when effective theme changes
+  useEffect(() => {
     setColorScheme(effectiveTheme);
-  }, [theme, systemColorScheme, setColorScheme]);
+  }, [effectiveTheme, setColorScheme]);
 
   const setTheme = async (newTheme: AppTheme) => {
     setCurrentTheme(newTheme);

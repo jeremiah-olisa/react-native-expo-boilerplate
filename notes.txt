@@ -1,0 +1,2 @@
+Protected Routes and Onboarding => 
+https://github.dev/kadikraman/expo-router-example/tree/main/6-protected-routes
