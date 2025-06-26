@@ -7,7 +7,6 @@ import { Stack } from "expo-router";
 const RootRouteStack = () => {
   const { isLoggedIn, hasCompletedOnboarding } = useAuthStore();
 
-  console.log({ isLoggedIn, hasCompletedOnboarding });
   return (
     <Stack>
       <Stack.Protected guard={isLoggedIn}>
