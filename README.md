@@ -1,50 +1,118 @@
-# Welcome to your Expo app 👋
+# React Native Expo Boilerplate 🚀
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A feature-rich starter template with authentication, onboarding, dark mode, and web support built with Expo and React Native.
 
-## Get started
+## Features ✨
 
-1. Install dependencies
+- **Authentication Flow** 🔐  
+  - Complete login/signup screens
+  - Zustand state management
+  - Secure token storage
 
+- **Onboarding Experience** 👋  
+  - 3-step animated onboarding
+  - Swipeable carousel
+  - Skip/Get Started options
+
+- **Dark Mode** 🌙  
+  - System-aware theme switching
+  - Smooth transitions
+  - NativeWind integration
+
+- **Cross-Platform** 🌐  
+  - iOS, Android & Web support
+  - Responsive layouts
+  - Universal navigation
+
+## Getting Started 🏁
+
+1. Install dependencies  
    ```bash
    npm install
    ```
 
-2. Start the app
-
+2. Start the development server  
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+## Usage Examples 📖
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### Authentication
+```typescript
+// Login example
+const { login } = useAuthStore();
+await login({ email: 'user@example.com', password: 'securepassword' });
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+// Protected route
+if (!isLoggedIn) router.replace('/login');
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Theme Switching
+```typescript
+// Toggle between light/dark/system
+const { theme, setTheme } = useTheme();
+setTheme('dark'); // 'light' | 'dark' | 'system'
 
-## Learn more
+// Theme-aware styling
+<View className="bg-white dark:bg-gray-900">
+  <Text className="text-black dark:text-white">
+    Adapts to current theme
+  </Text>
+</View>
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+### Onboarding Customization
+Edit `app/onboarding.tsx` to modify slides:
+```typescript
+const slides = [
+  {
+    emoji: '🌟',
+    title: 'New Feature',
+    description: 'Discover what\'s new in our app'
+  },
+  // Add more slides as needed
+];
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Project Structure 🗂️
+```
+app/
+├── components/       # Reusable components
+├── constants/        # App constants
+├── hooks/           # Custom hooks
+├── navigation/      # Routing setup
+├── screens/         # Main app screens
+├── stores/          # Zustand stores
+├── styles/          # Global styles
+├── utils/           # Utility functions
+└── _layout.tsx      # Root layout
+```
 
-## Join the community
+## Advanced Setup ⚙️
 
-Join our community of developers creating universal apps.
+### Web Configuration
+For optimal web experience:
+```bash
+npx expo install @expo/webpack-config
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### Environment Variables
+Create `.env` file:
+```
+API_URL=https://yourapi.com
+```
+
+Access variables:
+```typescript
+import Constants from 'expo-constants';
+const apiUrl = Constants.expoConfig?.extra?.API_URL;
+```
+
+## Community 💬
+
+- [Report Issues](https://github.com/your-repo/issues)
+- [Expo Discord](https://chat.expo.dev)
+- [Stack Overflow](https://stackoverflow.com/questions/tagged/expo)
+
+---
